@@ -1,4 +1,4 @@
-//
+  //
 //  ContentView.swift
 //  TestCameraApp
 //
@@ -8,17 +8,37 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var showCamera = false
+    @State private var image: UIImage?
+    
+
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            if let image = image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 300)
+                    .padding()
+            } else {
+                Text("No Image Taken")
+                    .padding()
+            }
+
+            Button(action: {
+                showCamera = true
+            }) {
+                Text("Take Picture")
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+            .sheet(isPresented: $showCamera) {
+                CameraView(image: $image)
+            }
         }
-        .padding()
     }
 }
 
-#Preview {
-    ContentView()
-}
+      
